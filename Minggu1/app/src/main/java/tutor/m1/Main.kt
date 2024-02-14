@@ -158,7 +158,7 @@ fun main() {
     // 2. menggunakan safe call
     println(pilihan?.toString())
 
-    // Ada pula cara untuk menggunakan value pengganti apabila null dengan elvis operator
+    // 3. elvis operator, menggunakan value pengganti apabila null
     println(pilihan ?: "Tidak ada pilihan")
 
     // kalau pasti tidak null, kita bisa menggunakan !! operator
@@ -210,6 +210,21 @@ fun main() {
     val data_ribu = data.map{ it * 1000}
     println("Data ribu")
     println(data_ribu)
+
+    val data_nol = data.find{ it == 0 }
+    println("Ini adalah data $data_nol")
+
+    //Data disini bernilai null karena pada saat menggunakan find,
+    // data dengan kondisi yang diberikan tidak ada
+    // kita bisa menggunakan elvis operator untuk memberikan nilai default
+    println("Ini adalah data ${data_nol ?: 0}")
+
+    print("Masukkan string dengan spasi:")
+    var cmd = readLine()
+    print(cmd)
+    for (i in cmd!!.split(' ')){
+        println(i)
+    }
 }
 
 fun getTahunLahir(umur: Int): Int{
