@@ -65,7 +65,7 @@ fun main() {
     println("Penggunaan when")
     when (ip) {
         4.0f -> println("Sempurna")
-        in 3.0f..2.0f -> println("Lulus")
+        in 2.0f..3.0f -> println("Lulus")
         1.9f -> println("Lulus bersyarat")
         else -> println("Gagal")
     }
