@@ -7,6 +7,11 @@ android {
     namespace = "com.example.tutorm3"
     compileSdk = 34
 
+    // Tambahkan 3 line berikut untuk viewbinding
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.example.tutorm3"
         minSdk = 24
