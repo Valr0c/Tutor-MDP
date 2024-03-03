@@ -55,6 +55,10 @@ class MainActivity : AppCompatActivity() {
                 var rnd = Random(System.currentTimeMillis())
                 var rndAngka = rnd.nextInt(0, 10)
                 hasil = rndAngka.toString() + ". " + hasil
+
+                // Cara lain random lbh pendek
+                // var rnd2 = (0..10).random()
+
                 // set txtHasil value
                 txtHasil.text = hasil
             }

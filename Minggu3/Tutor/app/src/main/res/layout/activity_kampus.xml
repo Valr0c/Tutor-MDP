@@ -45,6 +45,12 @@
         android:layout_weight="1"
         android:textSize="20sp" />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/logo_lkomp" />
+
     <TextView
         android:id="@+id/txtHilang"
         android:layout_width="match_parent"
@@ -65,5 +71,7 @@
         android:id="@+id/btnSMS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#BFBB5F"
         android:text="SMS" />
+
 </LinearLayout>
