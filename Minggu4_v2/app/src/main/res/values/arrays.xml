@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- ini untuk declare list static untuk ditempelkan ke spinner-->
+    <string-array name="jurusan_array">
+        <item>Informatika</item>
+        <item>SIB</item>
+        <item>DKV</item>
+        <item>Elektro</item>
+        <item>Lainnya</item>
+    </string-array>
+</resources>
