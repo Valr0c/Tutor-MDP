@@ -11,16 +11,19 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 
 class MainActivity : AppCompatActivity() {
     lateinit var btnToAddMahasiswa:Button
+    lateinit var btnSort:Button
     lateinit var btnChange:Button
     lateinit var rvMahasiswa: RecyclerView
     lateinit var mhsAdapter: MahasiswaAdapter
     private val NUMBER_OF_COL = 2
     var rvMode: Int = 1
+    var sortMode: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         rvMahasiswa = findViewById(R.id.rvMahasiswa)
         btnToAddMahasiswa = findViewById(R.id.btnToAddMahasiswa)
+        btnSort = findViewById(R.id.btnSort)
         btnChange = findViewById(R.id.btnChange)
 
         setAdapterAndLayoutManager(rvMode)
@@ -29,7 +32,25 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, AddMhsActivity::class.java)
             intent.putExtra("mode","INSERT")
             startActivity(intent)
-
+        }
+        btnSort.setOnClickListener {
+            if(sortMode==1){
+                sortMode = 0
+                //Untuk sorting secara descending, pakai sortByDescending
+                //untuk multiple sort, bisa dilakukan dengan memberi tanda +
+                MockDB.listMhs.sortByDescending {
+                    mhs-> mhs.nrp + mhs.nama
+                }
+                btnSort.text = "Sort Ascending"
+            }else {
+                sortMode = 1
+                //Untuk sorting secara ascending, pakai sortBy saja
+                MockDB.listMhs.sortBy {
+                    mhs-> mhs.nrp + mhs.nama
+                }
+                btnSort.text = "Sort Descending"
+            }
+            mhsAdapter.notifyDataSetChanged()
         }
         btnChange.setOnClickListener {
             when(rvMode){
