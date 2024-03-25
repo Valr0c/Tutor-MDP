@@ -41,8 +41,15 @@ class HomeFragment : Fragment() {
         layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
 
         mhsAdapter = MahasiswaAdapter(MockDB.listMhs) { mhs ->
-            //untuk memberikan arguments pada action navigation dapat dilakukan seperti ini
-            val action = HomeFragmentDirections.actionHomeFragmentToCreateFragment(mhs.nrp)
+            //untuk memberikan arguments pada action navigation dapat dilakukan seperti ini (bisa
+            // multiple argument juga)
+
+            //Bisa lewat action fragment tsb ke fragment lain
+            val action = HomeFragmentDirections.actionHomeFragmentToCreateFragment(mhs.nrp,mhs)
+
+            //Bisa juga lewat global action
+            //val action = HomeFragmentDirections.actionGlobalCreateFragment(mhs.nrp,mhs)
+
             findNavController().navigate(action)
         }
         //JANGAN DIBUAT SEPERTI INI, RV TIDAK AKAN MUNCUL

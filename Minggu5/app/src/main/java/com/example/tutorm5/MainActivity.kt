@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity() {
      * - Nav Graph (kumpulan destination fragment / activity dalam aplikasi)
      * - Nav Host (container yg menampilkan destinasi dari nav graph)
      * - Nav Controller (untuk melakukan aksi navigasi antar destinasi)
-     * Jangan lupa tambah dependency navigation (cth nav version bisa pakai 2.7.7)
+     * Jangan lupa tambah dependency navigation pada build.gradle module (cth nav version bisa
+     * pakai 2.7.7)
      *     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
      *     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
      * Untuk membuat nav graph
@@ -50,9 +51,22 @@ class MainActivity : AppCompatActivity() {
      *  - pilih fragment tersebut di navgraph
      *  - pada panel attributes, tambahkan argument baru
      *  - bisa diberikan nullable dan default value untuk argument
+     *
+     *  Jangan lupa menambahkan beberapa dependency untuk safeargs
+     *  -- pada build.gradle module (parcelize untuk mengirimkan object pada action navigation)
+     *  plugins {
+     *     id("kotlin-parcelize")
+     *  }
+     *
+     *  -- pada build.gradle (project)
+     *  plugins {
+     *     id("androidx.navigation.safeargs.kotlin") version "2.7.6" apply false
+     * }
      */
 
     lateinit var container: FragmentContainerView
+    // INGAT, komponen yang didrag adalah NavHostFragment bukan FragmentContainerView, namun
+    // tipenya adalah FragmentContainerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

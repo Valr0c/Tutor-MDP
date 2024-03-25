@@ -33,5 +33,15 @@ class MockDB {
                 else->"Lainnya"
             }
         }
+        fun toSpinnerPosition(jurusan:Int):Int{
+            var selectedPosition:Int = when(jurusan){
+                    11 -> 0
+                    18 -> 1
+                    17 -> 2
+                    10 -> 3
+                    else-> 4
+            }
+            return selectedPosition
+        }
     }
 }
