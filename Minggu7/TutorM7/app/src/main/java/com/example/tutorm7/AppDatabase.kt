@@ -17,7 +17,7 @@ class .kt. Jadi semua Entity yang hendak digunakan dan disimpan dalam database d
 @Database
  */
 
-@Database(entities = [UserEntity::class], version = 2)
+@Database(entities = [UserEntity::class], version = 1)
 // version itu penting karena nanti ketika kita update database kita bisa update versi database
 // perubahan version menyebabkan database local di device user akan diupdate
 abstract class AppDatabase: RoomDatabase(){
