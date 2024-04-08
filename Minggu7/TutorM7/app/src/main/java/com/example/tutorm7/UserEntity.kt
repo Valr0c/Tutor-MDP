@@ -30,8 +30,9 @@ data class UserEntity(
     @ColumnInfo(name = "username") val username:String,
     @ColumnInfo(name = "password") var password:String,
     @ColumnInfo(name = "name") val name:String,
+    @ColumnInfo(name = "gender") val gender:String,
 ){
     override fun toString(): String {
-        return "$name - $username"
+        return "$name - $username - ($gender)"
     }
 }

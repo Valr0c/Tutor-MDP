@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,10 +26,10 @@ Ada 3 hal yang harus diurus ketika mengimplementkan local storage:
 3. Entity Model
 
 Sebelum itu, pastikan sudah nambahi keempat implementation ini di build.gradle dependencies
-implementation "androidx.room:room-runtime:2.4.3"
-kapt "androidx.room:room-compiler:2.4.3"
-implementation "androidx.room:room-ktx:2.4.3"
-implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
 Tambahkan ini pada plugin
 id("kotlin-kapt")
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var txtUsername: TextView
     private lateinit var txtPassword: TextView
     private lateinit var btnSave: Button
+    private lateinit var spGender: Spinner
     private lateinit var rvUser: RecyclerView
     private lateinit var userAdapter: UserAdapter
     //Deklarasi variabel AppDatabase
@@ -75,9 +77,20 @@ class MainActivity : AppCompatActivity() {
         txtUsername = findViewById(R.id.txtUsername)
         txtPassword = findViewById(R.id.txtPassword)
         btnSave = findViewById(R.id.btnSave)
+        spGender = findViewById(R.id.spGender)
         rvUser = findViewById(R.id.rvUser)
 
-        db = Room.databaseBuilder(baseContext, AppDatabase::class.java, "prakm7").build()
+        var listGender:ArrayList<String> = arrayListOf("Pria", "Wanita")
+
+        var spinnerAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            this,android.R.layout.simple_spinner_item,listGender)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spGender.adapter = spinnerAdapter
+
+        db = Room.databaseBuilder(baseContext, AppDatabase::class.java, "prakm7").fallbackToDestructiveMigration().build()
+        // .fallbackToDestructiveMigration() berguna jika kita menaikan versiond dari db
+        // kita tidak perlu melakukan migrate. Biasanya akan diminta untuk migrate jika menaikkan version db
+
         users = ArrayList()
         rvUser.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.VERTICAL, false)
@@ -96,7 +109,6 @@ class MainActivity : AppCompatActivity() {
             /*
             Di dalam scope thread IO, kita juga bisa mengexecute command di main thread
             dengan membuat scope runOnUiThread{}
-            Warnin
              */
             runOnUiThread {
                 Toast.makeText(this@MainActivity, "Panjang list : ${users.size.toString()}", Toast.LENGTH_SHORT).show()
@@ -109,6 +121,11 @@ class MainActivity : AppCompatActivity() {
             txtName.text = it.name
             txtUsername.text = it.username
             txtPassword.text = it.password
+            val selectedGender:Int = when(it.gender){
+                "Pria" -> 0
+                else -> 1
+            }
+            spGender.setSelection(selectedGender)
         }
         userAdapter.onDeleteClickListener = {
             coroutine.launch {
@@ -127,11 +144,18 @@ class MainActivity : AppCompatActivity() {
             val name = txtName.text.toString()
             val username = txtUsername.text.toString()
             val password = txtPassword.text.toString()
+            val gender: String = spGender.selectedItem.toString()
+
+            if (name == "" || username == "" || password == ""){
+                Toast.makeText(this, "All field is required!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val user = UserEntity(
                 name = name,
                 username = username,
-                password = password
+                password = password,
+                gender = gender,
             )
 
             coroutine.launch {
@@ -182,65 +206,8 @@ class MainActivity : AppCompatActivity() {
         txtUsername.setText("")
         txtName.setText("")
         txtPassword.setText("")
+        spGender.setSelection(0)
     }
 
-//    fun insert(user: UserEntity) {
-//        /*
-//        Untuk melakukan query DB, command2 query ditaruh di dalam scope coroutine.launch{}
-//        Artinya, command2 di dalam scope ini akan diexecute di luar main thread
-//         */
-//        coroutine.launch {
-//            if (db.userDao.get(user.username) != null) {
-//                runOnUiThread {
-//                    Toast.makeText(this@MainActivity, "Username not unique", Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//            } else {
-//                db.userDao.insert(user)
-//                refresh()
-//                runOnUiThread {
-//                    Toast.makeText(this@MainActivity, "Insert new user", Toast.LENGTH_SHORT).show()
-//                    resetFields()
-//                }
-//            }
-//        }
-//    }
 
-//    fun btnClick() {
-//        val name = txtName.text.toString()
-//        val username = txtUsername.text.toString()
-//        val password = txtPassword.text.toString()
-//
-//        val user = UserEntity(
-//            name = name,
-//            username = username,
-//            password = password
-//        )
-//
-//        coroutine.launch {
-//            if (isInsertMode) {
-//                insert(user)
-//            } else {
-//                db.userDao.update(user)
-//                refresh()
-//                isInsertMode = true
-//                runOnUiThread {
-//                    btnSave.text = "ADD"
-//                    resetFields()
-//                    Toast.makeText(this@MainActivity, "Success update item", Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//            }
-//        }
-//
-//    }
-
-
-//    suspend fun delete(user:UserEntity){
-//        db.userDao.delete(user)
-//        refresh()
-//        runOnUiThread {
-//            Toast.makeText(this@MainActivity,"Success delete user",Toast.LENGTH_SHORT).show()
-//        }
-//    }
 }

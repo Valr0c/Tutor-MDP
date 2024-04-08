@@ -14,7 +14,8 @@ class UserAdapter (
     var onDeleteClickListener:((UserEntity)->Unit)? = null,
 ): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
     class ViewHolder(val row: View) : RecyclerView.ViewHolder(row){
-        val nrpTv: TextView = row.findViewById(R.id.txtData)
+        val txtData: TextView = row.findViewById(R.id.txtData)
+        val txtGender: TextView = row.findViewById(R.id.txtGender)
         val btnEdit: Button = row.findViewById(R.id.btnEdit)
         val btnDelete: Button = row.findViewById(R.id.btnDelete)
     }
@@ -27,7 +28,8 @@ class UserAdapter (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val u = data[position]
-        holder.nrpTv.text = "${u.username} ${u.name}"
+        holder.txtData.text = "${u.username} ${u.name}"
+        holder.txtGender.text = u.gender
 
         holder.btnDelete.setOnClickListener{
             onDeleteClickListener?.invoke(u)
