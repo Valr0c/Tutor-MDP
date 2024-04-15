@@ -87,7 +87,13 @@ class MainActivity : AppCompatActivity() {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spGender.adapter = spinnerAdapter
 
-        db = Room.databaseBuilder(baseContext, AppDatabase::class.java, "prakm7").build()
+        //cara pertama inisiasi instance
+//        db = Room.databaseBuilder(baseContext, AppDatabase::class.java, "prakm7").fallbackToDestructiveMigration().build()
+        // .fallbackToDestructiveMigration() berguna jika kita menaikan versiond dari db
+        // kita tidak perlu melakukan migrate. Biasanya akan diminta untuk migrate jika menaikkan version db
+
+        //cara kedua, penjelasan lebih lengkap pada class AppDatabase
+        db = AppDatabase.build(this)
 
         users = ArrayList()
         rvUser.layoutManager = LinearLayoutManager(this,
